@@ -1,0 +1,38 @@
+1. feh
+2. compton
+3. blueman
+4. metwork-manager
+5. libnotify
+6. udiskie
+7. gnome-screenshot
+8. i3-gaps
+9. polybar
+10. rofi
+11. nvim
+12. vim
+13. nitrogen
+14. htop
+15. cmatrix
+16. lxappearance
+17. pulseaudio volume control
+18. ranger
+19. alacritty
+20. betterlockscreen
+
+
+Browsers :-
+1. firefox
+2. brave
+3. chrome
+
+Apps :-
+1. spotify
+2. vscode
+3. discord
+4. mysql workbench
+5. qbittorrent
+6. blender
+7. audacity
+8. obs studio
+9. openshot video editor
+10. zoom

@@ -1,0 +1,3 @@
+INDEX VERSION 1.131+/home/prasad/.config/coc/extensions/coc-java-data/jdt_ws_bf7a76b31a8d1030e02e3e090d0331f5/.metadata/.plugins/org.eclipse.jdt.core
+3842426239.index
+3133283093.index

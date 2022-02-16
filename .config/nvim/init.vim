@@ -14,7 +14,7 @@ set cursorline
 set mouse=a 
 set noerrorbells
 set noswapfile
-set tabstop=4 shiftwidth=4
+set tabstop=2 shiftwidth=2
 set listchars=tab:\|\ 
 set list
 set number relativenumber
@@ -43,7 +43,15 @@ filetype plugin on
 " set background=dark
 "  set termguicolors
 
-au BufNewFile,BufRead *.py,*.java,*.c,*.html,*.css,*.js
+au BufNewFile,BufRead *.java,*.c,*.html,*.css,*.js
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
+    \ set textwidth=120 |
+    \ set expandtab |
+    \ set autoindent |
+
+au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -55,6 +63,9 @@ au BufNewFile,BufRead *.py,*.java,*.c,*.html,*.css,*.js
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'gruvbox'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#fugitiveline#enabled = 1
+let g:airline#extensions#virtualenv#enabled = 1
+let g:airline#extensions#poetv#enabled = 1
 
 if !exists('g:airline_symbols')
         let g:airline_symbols = {}
@@ -107,19 +118,27 @@ Plug 'morhetz/gruvbox'
 Plug 'tomasiser/vim-code-dark'
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-css-color'
+Plug 'KabbAmine/vCoolor.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'jmcantrell/vim-virtualenv'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'vimlab/split-term.vim'
 Plug 'mhinz/vim-startify'
+Plug 'mattn/emmet-vim'
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
 call plug#end()
 
 "HOME TAKES THE POINTER TO THE FIRST NON-SPACE COLUMN OF THE LINE
 :map <Home> ^
 :imap <Home> <Esc>^i
+
+"Ctrl+\ && Ctrl+n => Ctrl+i
 
 "SWITCHING BETWEEN TABS
 nnoremap <C-Left> :bp<CR>
@@ -137,6 +156,13 @@ nmap <S-f> :FZF<cr>
 nmap <C-t> :VTerm<cr>
 "HORIZONTAL TERMINAL
 nmap <S-t> :Term<cr>
+
+"Prettier
+nmap <C-p> :Prettier<cr>
+
+"COLOR PICKER(VCOOLOR)
+nmap <S-p> :VCoolor<cr>
+inoremap <S-p> <esc>:VCoolor<cr>
 
 
 "MOVING LINES
@@ -174,7 +200,18 @@ set background=dark
 
 "NERD TREE
 nnoremap <C-a> :NERDTreeToggle %<CR>
+nnoremap <S-a> :NERDTreeToggle<CR>
 let g:NERDTreeGitStatusWithFlags = 1
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+"" Exit Vim if NERDTree is the only window remaining in the only tab.
+"autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+"" Close the tab if NERDTree is the only window remaining in it.
+"autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
@@ -198,3 +235,6 @@ let g:gruvbox_contrast_dark = 'hard'
  colorscheme gruvbox
  set background=dark
   set termguicolors
+
+
+let g:prettier#exec_cmd_path = "~/path/to/cli/prettier"

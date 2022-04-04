@@ -43,7 +43,7 @@ filetype plugin on
 " set background=dark
 "  set termguicolors
 
-au BufNewFile,BufRead *.java,*.c,*.html,*.css,*.js
+au BufNewFile,BufRead *.java,*.c,*.html,*.css,*.js,*.jsx
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
@@ -115,6 +115,7 @@ Plug 'Manu-sh/NeonVimColorscheme'
 Plug 'ryanoasis/vim-devicons'
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 Plug 'tomasiser/vim-code-dark'
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-css-color'
@@ -127,6 +128,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 Plug 'vimlab/split-term.vim'
 Plug 'mhinz/vim-startify'
 Plug 'mattn/emmet-vim'
@@ -147,7 +150,8 @@ nnoremap <C-Home> :bfirst<CR>
 nnoremap <C-End> :blast<CR>
 
 "CLOSING TAB
-nmap <C-x> :bd<CR>
+"nmap <C-x> :bd<CR>
+nnoremap <C-x> :bp<cr>:bd #<cr>
 
 "FUZZY FINDER
 nmap <S-f> :FZF<cr>
@@ -162,14 +166,22 @@ nmap <C-p> :Prettier<cr>
 
 "COLOR PICKER(VCOOLOR)
 nmap <S-p> :VCoolor<cr>
-inoremap <S-p> <esc>:VCoolor<cr>
 
 
 "MOVING LINES
+"DOWN
 nmap <C-j> ddp
+"UP
 nmap <C-k> ddkkp
 nmap <C-l> dlp
 nmap <C-h> dlhhp
+
+"MOVING MULTIPLE LINES
+"DOWN
+vnoremap J :m '>+1<CR>gv=gv
+"UP
+vnoremap K :m '<-2<CR>gv=gv
+
 
 "HORIZONTAL RESIZING
 nmap <S-Up> :res +1<cr>
@@ -207,34 +219,22 @@ let g:NERDTreeGitStatusWithFlags = 1
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
-"" Exit Vim if NERDTree is the only window remaining in the only tab.
-"autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-"" Close the tab if NERDTree is the only window remaining in it.
-"autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 
-" sync open file with NERDTree
-" " Check if NERDTree is open or active
-"function! IsNERDTreeOpen()
-"    return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-"endfunction
-
-"Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
-"file, and we're not in vimdiff
-"function! SyncTree()
-"    if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-"        NERDTreeFind
-"        wincmd p
-"    endif
-"endfunction
-
-" Highlight currently open buffer in NERDTree
-"autocmd BufEnter * call SyncTree()
 
 let g:gruvbox_contrast_dark = 'hard' 
  colorscheme gruvbox
  set background=dark
   set termguicolors
 
+let g:gruvbox_material_transparent_background = 1
 
 let g:prettier#exec_cmd_path = "~/path/to/cli/prettier"
+let g:prettier#config#single_quote = 'true'
+let g:prettier#config#trailing_comma = 'all'
+
+highlight CocUnusedHighlight ctermbg=NONE guibg=NONE guifg=#FF9E55
